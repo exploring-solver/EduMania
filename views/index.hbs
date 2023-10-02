@@ -10,73 +10,18 @@
 </head>
 
 <body class="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
-    <div class="flex justify-center mt-4">
-        <button class="rounded-lg text-xl bg-green-400 px-4 py-2 create-button">Create Room</button>
-        <button class="rounded-lg text-xl bg-blue-500 px-4 py-2 ml-4 join-button">Join Room</button>
-    </div>
-    <div class=" flex  justify-between ml-2 mt-4">
-        <button class="rounded-lg text-xl bg-green-400 px-2">Players 1</button>
-        <div class="flex gap-3 mr-5">
-            <button class="rounded-lg text-xl bg-indigo-500 px-2">Rules</button>
-            <button class="rounded-lg text-xl bg-blue-500 px-2">Yomons</button>
+    <div class="flex flex-col items-center justify-center gap-4">
+        <div class="flex justify-center mt-4">
+            <button class="rounded-lg text-xl bg-green-400 px-4 py-2 create-button">Create Room</button>
+            <button class="rounded-lg text-xl bg-blue-500 px-4 py-2 ml-4 join-button">Join Room</button>
         </div>
-    </div>
-    <div class="flex mt-5 justify-between w-[90%] m-auto">
-        <div class="card bg-green-500 p-2 h-64 w-56 rounded-lg">
-            <h1 class="text-3xl font-semibold text-center">Team Ramanujan</h1>
-            <ul class="members-list pl-10 pt-2">
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-            </ul>
-            <!-- Inside each team div -->
-            <button class="rounded-lg text-xl bg-green-400 px-2 join-team" data-team="teamRamanujan">Join Team</button>
-
-        </div>
-        <div class="card h-64 flex-col flex justify-center items-center rounded-lg">
-            <button class="rounded-lg text-3xl py-2 bg-red-500 px-4">
-                Start
-            </button>
-            <div class="text-xl mt-2 bg-yellow-500 py-6 px-4">
-                <p>Which is second planet in solar system?</p>
-                <form class="options">
-                    <label class="option">
-                        <input type="radio" name="option" value="A">
-                        A) Venus
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="option" value="B">
-                        B) Mars
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="option" value="C">
-                        C) Jupiter
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="option" value="D">
-                        D) Saturn
-                    </label>
-                </form>
-            </div>
-        </div>
-        <div class="card bg-indigo-400 p-2 h-64 w-56 rounded-lg">
-            <h1 class="text-3xl font-semibold text-center">Team Aryabhatta</h1>
-            <ul class="members-list pl-10 pt-2">
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-                <li class="text-xl">Player </li>
-            </ul>
-            <!-- Inside each team div -->
-            <button class="rounded-lg text-xl bg-green-400 px-2 join-team" data-team="teamRamanujan">Join Team</button>
-
+        <div class="flex justify-center">
+            <input id="playerName" class="outline-none p-2 text-xl bg-slate-500 border-[1px] border-blue-500" type="text" name="name"
+                placeholder="Your name...">
         </div>
     </div>
 
-    <p class="text-2xl mt-[200px]">Hi so i am making a game for JEE/NEET students where they can compete with each other
+    <p class="text-2xl mt-[200px] ml-2">Hi so i am making a game for JEE/NEET students where they can compete with each other
         and hopefully get meaning to their stupid lives dedicated to a stupid exam which i was unable to crack and
         failed to get into IIT
         and now i hope to save others time and let them doze off the depression while learning new concepts of JEE/NEET

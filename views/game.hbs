@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduMania-Competitive Exam games</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%">
+
+    <p>{{roomId}}</p>
+    <!-- Display Teams and Game Content -->
+    <!-- Display Teams and Game Content -->
+    <div class="flex mt-5 justify-between w-[90%] m-auto">
+        {{#each teams}}
+        <div class="card bg-green-500 p-2 h-64 w-56 rounded-lg">
+            <h1 class="text-3xl font-semibold text-center">{{this.teamName}}</h1>
+            <ul class="members-list pl-10 pt-2">
+                {{#each this.players}}
+                <li class="text-xl">{{this}}</li>
+                {{/each}}
+            </ul>
+            <button class="rounded-lg text-xl bg-green-400 px-2 join-team" data-team="{{this.teamName}}">Join Team</button>
+        </div>
+        {{/each}}
+    </div>
+
+    {{#if currentQuestion}}
+    <div class="card h-64 flex-col flex justify-center items-center rounded-lg">
+        <button class="rounded-lg text-3xl py-2 bg-red-500 px-4">
+            Start
+        </button>
+        <div class="text-xl mt-2 bg-yellow-500 py-6 px-4">
+            <p>{{currentQuestion.questionText}}</p>
+            <form class="options">
+                {{#each currentQuestion.options}}
+                <label class="option">
+                    <input type="radio" name="option" value="{{this.optionValue}}">
+                    {{this.optionText}}
+                </label>
+                {{/each}}
+            </form>
+        </div>
+    </div>
+    {{/if}}
+    
+    <p class="text-2xl mt-[200px]">Hi so i am making a game for JEE/NEET students where they can compete with each other
+        and hopefully get meaning to their stupid lives dedicated to a stupid exam which i was unable to crack and
+        failed to get into IIT
+        and now i hope to save others time and let them doze off the depression while learning new concepts of JEE/NEET
+        See you later when i am back till then listen to Kishore Kumar Nice singer
+        bye losers(i am the biggest)</p>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="/index.js"></script>
+</body>
+</html>

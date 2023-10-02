@@ -1,9 +1,13 @@
 const express = require('express');
 const app = express();
 const path = require("path");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const { getGameDataFromBackend } = require('./routes/utils');
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use(cookieParser());
 
 // socket.io setup
 const http = require('http')
@@ -12,65 +16,51 @@ const { Server } = require('socket.io')
 const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-const port = 3000
-
 app.set('view engine', 'hbs')
 
+const port = 3000
+const db = require('./db');
+
+const rooms = {}; // This object will hold room-related data
+
+// Import and use socketHandlers
+const socketHandlers = require('./sockets/socketHandlers');
+socketHandlers(io, rooms, db);
+
+// Routes
+// const indexRoutes = require('./routes/index');
+const gameRoutes = require('./routes/game')(db , rooms);
+const questionRoutes = require('./routes/questions')(db,rooms);
+// app.use('/', indexRoutes);
+app.put('/', (req, res) => {
+    res.render('index');
+}); 
 app.get('/', (req, res) => {
-    res.render('index')
+    res.render('index');
 });
 
-const rooms = {}; // Store room data with players
 
-// Backend players array to store players and their teams
-const players = [];
+app.get('/games/:roomId', async (req, res) => {
+    const roomId = req.params.roomId;
 
-function joinTeam(roomCode, playerName, team) {
-    if (rooms[roomCode]) {
-        const player = { playerName, socketId: socket.id, team };
-        rooms[roomCode].push(player);
-        socket.join(roomCode);
-        io.to(socket.id).emit('teamJoined', team);
-        io.emit('updatedRooms', Object.keys(rooms));
-    } else {
-        socket.emit('roomNotFound');
-    }
-}
+    try {
+        // Fetch game-related data from your backend based on roomId
+        const gameData = await getGameDataFromBackend(roomId); // Implement this function
 
-// Socket.IO logic for player joining and room creation
-io.on('connection', (socket) => {
-    socket.on('createRoom', ({ playerName }) => {
-        const roomCode = generateRoomCode();
-        rooms[roomCode] = [{ playerName, socketId: socket.id }];
-        socket.join(roomCode);
-        socket.emit('roomCreated', roomCode);
-        io.emit('updatedRooms', Object.keys(rooms));
-    });
-
-    socket.on('joinRoom', ({ roomCode, playerName }) => {
-        if (rooms[roomCode]) {
-            rooms[roomCode].push({ playerName, socketId: socket.id });
-            socket.join(roomCode);
-            io.emit('updatedRooms', Object.keys(rooms));
+        if (gameData) {
+            res.render('game', { roomId, teams: gameData.teams, currentQuestion: gameData.currentQuestion }); // Pass roomId and gameData to template
         } else {
-            socket.emit('roomNotFound');
+            // Handle invalid room ID or no game data
+            res.redirect('/');
         }
-    });
-
-    socket.on('joinTeam', ({ roomCode, playerName, team }) => {
-        joinTeam(roomCode, playerName, team);
-        io.to(socket.id).emit('teamJoined', team);
-        io.emit('updatedRooms', Object.keys(rooms));
-    });
-    
+    } catch (error) {
+        console.error('Error fetching game data:', error);
+        res.redirect('/');
+    }
 });
 
-
-function generateRoomCode() {
-    const code = Math.floor(1000 + Math.random() * 9000);
-    return code.toString();
-}
+app.use('/game', gameRoutes); 
+app.use('/question' , questionRoutes); 
 
 // START THE SERVER
 server.listen(port, () => {
